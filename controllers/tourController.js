@@ -4,6 +4,19 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+exports.checkID = (req, res, next, val) => {
+  console.log(`Tour id is ${val}`);
+  if (req.params.id * 1 > tours.length) {
+    // Status Code 404 = not found
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  next();
+};
+
 // ROUTES HANDLER
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
@@ -59,14 +72,6 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    // Status Code 404 = not found
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   res.status(200).json({
     status: 'success',
     data: {
@@ -76,14 +81,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    // Status Code 404 = not found
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   // Status Code 204 = no content
   res.status(204).json({
     status: 'success',
