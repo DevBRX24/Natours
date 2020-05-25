@@ -14,11 +14,28 @@ monggoes
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
+    useUnifiedTopology: true,
     useFindAndModify: false
   })
   .then(() => {
-    console.log('DB connection successful');
+    console.log('DB connection successful!');
   });
+
+// FOR TESTING PURPOSES
+
+// const testTour = new Tour({
+//   name: 'The Moutainer',
+//   price: 600
+// });
+
+// testTour
+//   .save()
+//   .then(doc => {
+//     console.log(doc);
+//   })
+//   .catch(err => {
+//     console.log('Error: ', err);
+//   });
 
 const port = process.env.PORT || 3000;
 
