@@ -12,7 +12,7 @@ const tourSchema = new monggoes.Schema({
   },
   price: {
     type: Number,
-    required: [true, 'A tour must have prime']
+    required: [true, 'A tour must have price']
   }
 });
 
