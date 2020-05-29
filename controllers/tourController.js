@@ -123,9 +123,6 @@ exports.getTourStats = async (req, res) => {
           minPrice: { $min: '$price' },
           mavPrice: { $max: '$price' }
         }
-      },
-      {
-        $match: { _id: { $ne: 'EASY' } }
       }
     ]);
 
