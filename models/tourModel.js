@@ -7,7 +7,9 @@ const tourSchema = new monggoes.Schema(
       type: String,
       required: [true, 'A tour must have name'],
       unique: true,
-      trim: true
+      trim: true,
+      maxlength: [40, 'A tour must have less or equal than 40 characters'],
+      minlength: [10, ' A tour must have more than or equal than 10 characters']
     },
     slug: String,
     duration: {
@@ -20,11 +22,14 @@ const tourSchema = new monggoes.Schema(
     },
     difficulty: {
       type: String,
-      required: [true, 'A tour must a difficulty']
+      required: [true, 'A tour must a difficulty'],
+      enum: ['easy', 'medium', 'difficult']
     },
     ratingsAverage: {
       type: Number,
-      default: 4.6
+      default: 4.6,
+      min: [1, 'Rating must be above 1.0'],
+      max: [5, 'Rating must be below 0']
     },
     ratingQuantity: {
       type: Number,
@@ -34,7 +39,16 @@ const tourSchema = new monggoes.Schema(
       type: Number,
       required: [true, 'A tour must have price']
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function(val) {
+          // This only points to current doc on New document creation
+          return val < this.price;
+        },
+        message: 'Discount price ({VALUE}) should be below regular price'
+      }
+    },
     summary: {
       type: String,
       trim: true,
