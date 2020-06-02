@@ -18,6 +18,11 @@ const userSchema = new monggoes.Schema({
     required: [true, 'Please provide your email address!']
   },
   photo: [String],
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user'
+  },
   password: {
     type: String,
     trim: true,
