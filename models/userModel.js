@@ -1,4 +1,5 @@
 const monggoes = require('mongoose');
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
@@ -33,7 +34,7 @@ const userSchema = new monggoes.Schema({
   passwordConfirm: {
     type: String,
     trim: true,
-    required: [true, 'Please cofirm your password'],
+    required: [true, 'Please confirm your password'],
     validate: {
       // This is only works on CREATE and SAVE
       validator: function(el) {
@@ -42,9 +43,9 @@ const userSchema = new monggoes.Schema({
       message: 'Password are not the same!'
     }
   },
-  passwordChangedAt: {
-    type: Date
-  }
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date
 });
 
 userSchema.pre('save', async function(next) {
@@ -78,6 +79,21 @@ userSchema.methods.passwordChangedAfter = function(JWTTimestamp) {
 
   // False means NOT changed
   return false;
+};
+
+userSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
 };
 
 const User = monggoes.model('User', userSchema);
