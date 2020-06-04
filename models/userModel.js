@@ -45,7 +45,12 @@ const userSchema = new monggoes.Schema({
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordResetExpires: Date
+  passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
+  }
 });
 
 userSchema.pre('save', function(next) {
@@ -64,6 +69,14 @@ userSchema.pre('save', async function(next) {
 
   // Delete passwordConfirm field
   this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.pre(/^find/, function(next) {
+  // find all the query that start with find
+  // this points to the current query
+  this.find({ active: { $ne: false } });
+
   next();
 });
 
