@@ -1,5 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.deleteOne = Model =>
   catchAsync(async (req, res, next) => {
@@ -47,10 +48,11 @@ exports.createOne = Model =>
     });
   });
 
-exports.getOne = Model =>
+exports.getOne = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findById(req.params.id).populate('reviews');
-    // Same as doc.findOne({_id: req.params.id})
+    let query = Model.findById(req.params.id);
+    if (populateOptions) query = query.populate(populateOptions);
+    const doc = await query;
 
     if (!doc) {
       return next(new AppError('No doc found with that ID', 404));
@@ -60,6 +62,26 @@ exports.getOne = Model =>
       status: 'sucess',
       data: {
         doc
+      }
+    });
+  });
+
+exports.getAll = Model =>
+  catchAsync(async (req, res, next) => {
+    // EXECUTE QUERY
+    const features = new APIFeatures(Model.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const doc = await features.query;
+
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'succsess',
+      results: doc.length,
+      data: {
+        data: doc
       }
     });
   });
