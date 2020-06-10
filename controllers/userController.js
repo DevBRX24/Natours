@@ -11,6 +11,11 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
+exports.creatUser = factory.createOne(User);
+exports.updateUser = factory.updateOne(User);
+exports.deleteUser = factory.deleteOne(User);
+exports.getUser = factory.getOne(User);
+
 // ROUTE HANDLER
 exports.getAllUsers = catchAsync(async (req, res) => {
   const users = await User.find();
@@ -60,26 +65,3 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     data: null
   });
 });
-
-exports.creatUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet define'
-  });
-};
-
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet define'
-  });
-};
-
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet define'
-  });
-};
-
-exports.deleteUser = factory.deleteOne(User);
