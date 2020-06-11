@@ -35,6 +35,8 @@ const reviewSchema = new monggoes.Schema(
   }
 );
 
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'user',
@@ -89,7 +91,7 @@ reviewSchema.post('save', function() {
 // findByIdAndDelete
 reviewSchema.pre(/^findOneAnd/, async function(next) {
   this.r = await this.findOne();
-  console.log(this.r);
+  //console.log(this.r);
   next();
 });
 
