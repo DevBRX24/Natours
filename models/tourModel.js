@@ -28,11 +28,11 @@ const tourSchema = new monggoes.Schema(
     },
     ratingsAverage: {
       type: Number,
-      default: 4.6,
+      default: 4.5,
       min: [1, 'Rating must be above 1.0'],
       max: [5, 'Rating must be below 0']
     },
-    ratingQuantity: {
+    ratingsQuantity: {
       type: Number,
       default: 0
     },
