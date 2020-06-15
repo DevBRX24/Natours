@@ -64,7 +64,7 @@ const tourSchema = new monggoes.Schema(
       type: String,
       required: [true, 'A tour must have a cover image']
     },
-    image: [String],
+    images: [String],
     createdAt: {
       type: Date,
       default: Date.now(),
