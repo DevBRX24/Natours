@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "axois": "0.0.1-security",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
