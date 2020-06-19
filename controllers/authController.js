@@ -67,6 +67,17 @@ exports.login = catchAsync(async (req, res, next) => {
   // 3) If everything ok, send token to client
   createSendToken(user, 200, res);
 });
+
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+  res.status(200).json({
+    status: 'success'
+  });
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
   // 1 Getting token and check if its there
   let token;
@@ -106,6 +117,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
@@ -126,13 +138,12 @@ exports.isLoggedIn = async (req, res, next) => {
       }
 
       // 3) Check if user changed password after the token was issued
-      if (currentUser.changedPasswordAfter(decoded.iat)) {
+      if (currentUser.passwordChangedAfter(decoded.iat)) {
         return next();
       }
 
       // THERE IS A LOGGED IN USER
       res.locals.user = currentUser;
-      console.log(res.locals.user);
       return next();
     } catch (error) {
       return next();
