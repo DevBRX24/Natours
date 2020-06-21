@@ -18,7 +18,7 @@ const userSchema = new monggoes.Schema({
     validate: [validator.isEmail, 'Please provide a valid email address'],
     required: [true, 'Please provide your email address!']
   },
-  photo: [String],
+  photo: { type: String, default: 'default.jpg' },
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
