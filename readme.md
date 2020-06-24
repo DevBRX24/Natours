@@ -1,3 +1,3 @@
 Natours Web Application
 
-Built using modern technologies: CSS, Pug Template Engine, Node.js, Express, MonggoDB, Mongooes.
+Built using modern technologies: CSS, Pug Template Engine, Node.js, Express, MonggoDB and Mongooes.
